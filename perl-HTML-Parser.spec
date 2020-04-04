@@ -3,7 +3,7 @@
 Name:           %{?scl_prefix}perl-HTML-Parser
 Summary:        Perl module for parsing HTML
 Version:        3.72
-Release:        22%{?dist}
+Release:        23%{?dist}
 License:        GPL+ or Artistic
 Source0:        https://cpan.metacpan.org/authors/id/G/GA/GAAS/HTML-Parser-%{version}.tar.gz 
 URL:            https://metacpan.org/release/HTML-Parser
@@ -52,6 +52,7 @@ HTML::LinkExtor, HTML::PullParser, and HTML::TokeParser modules.
 %prep
 %setup -q -n HTML-Parser-%{version}
 chmod -c a-x eg/*
+%{?scl:scl enable %{scl} '}perl -MConfig -i -pe %{?scl:'"}'%{?scl:"'}s{#!/usr/bin/perl}{$Config{startperl}}%{?scl:'"}'%{?scl:"'} eg/*%{?scl:'}
 
 %build
 %{?scl:scl enable %{scl} '}perl Makefile.PL INSTALLDIRS=vendor OPTIMIZE="%{optflags}" NO_PACKLIST=1 NO_PERLLOCAL=1 && %make_build%{?scl:'}
@@ -75,6 +76,9 @@ find %{buildroot} -type f -name '*.bs' -empty -delete
 %{_mandir}/man3/*.3pm*
 
 %changelog
+* Thu Mar 26 2020 Petr Pisar <ppisar@redhat.com> - 3.72-23
+- Normalize shebangs (bug #1817331)
+
 * Thu Feb 13 2020 Petr Pisar <ppisar@redhat.com> - 3.72-22
 - Import to SCL
 
